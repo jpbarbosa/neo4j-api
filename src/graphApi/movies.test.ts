@@ -101,4 +101,63 @@ describe('moviesApi', () => {
 
     expect(theGodfatherUpdated.tagline).toEqual(theGodfather.tagline);
   });
+
+  it('should add one actor and one reviewer to The Godfather', async () => {
+    const theGodfather = sampleMovies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+    theGodfather.actors.push({
+      name: 'James Caan',
+      born: 1940,
+      roles: ['Sonny Corleone'],
+    });
+    theGodfather.reviewers.push({
+      name: 'Vincent Canby',
+      rating: 100,
+    });
+
+    await moviesApi(session).upsertMovie({
+      movies: [theGodfather],
+    });
+
+    const movies = await moviesApi(session).getMovies({
+      titles: ['The Godfather'],
+    });
+    const theGodfatherUpdated = movies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+
+    expect(theGodfatherUpdated.actors).toIncludeSameMembers(
+      theGodfather.actors
+    );
+    expect(theGodfatherUpdated.reviewers).toIncludeSameMembers(
+      theGodfather.reviewers
+    );
+  });
+
+  it('should remove one actor and one reviewer from The Godfather', async () => {
+    const theGodfather = sampleMovies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+    theGodfather.actors.pop();
+    theGodfather.reviewers.pop();
+
+    await moviesApi(session).upsertMovie({
+      movies: [theGodfather],
+    });
+
+    const movies = await moviesApi(session).getMovies({
+      titles: ['The Godfather'],
+    });
+    const theGodfatherUpdated = movies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+
+    expect(theGodfatherUpdated.actors).toIncludeSameMembers(
+      theGodfather.actors
+    );
+    expect(theGodfatherUpdated.reviewers).toIncludeSameMembers(
+      theGodfather.reviewers
+    );
+  });
 });
