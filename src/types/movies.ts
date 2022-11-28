@@ -7,3 +7,7 @@ export type Movie = {
   actors: Actor[];
   reviewers: Reviewer[];
 };
+
+export type GetMoviesParams = {
+  titles: string[];
+};

@@ -60,4 +60,45 @@ describe('moviesApi', () => {
       expect(resultReviewers).toIncludeSameMembers(reviewers);
     });
   });
+
+  it('should get only The Godfather', async () => {
+    const results = await moviesApi(session).getMovies({
+      titles: ['The Godfather'],
+    });
+
+    results.forEach((result) => {
+      const sampleMovie = sampleMovies.find(
+        (item) => item.title === result.title
+      )!;
+      const { actors, reviewers, ...rootProps } = sampleMovie;
+      const {
+        actors: resultActors,
+        reviewers: resultReviewers,
+        ...resultRootProps
+      } = result;
+      expect(resultRootProps).toEqual(rootProps);
+      expect(resultActors).toIncludeSameMembers(actors);
+      expect(resultReviewers).toIncludeSameMembers(reviewers);
+    });
+  });
+
+  it('should update The Godfather tagline', async () => {
+    const theGodfather = sampleMovies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+    theGodfather.tagline = "An offer you can't refuse. Updated.";
+
+    await moviesApi(session).upsertMovie({
+      movies: [theGodfather],
+    });
+
+    const movies = await moviesApi(session).getMovies({
+      titles: ['The Godfather'],
+    });
+    const theGodfatherUpdated = movies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+
+    expect(theGodfatherUpdated.tagline).toEqual(theGodfather.tagline);
+  });
 });

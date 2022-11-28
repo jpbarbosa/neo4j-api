@@ -5,7 +5,7 @@ import {
   upsertMoviesActors,
   upsertMoviesReviewers,
 } from '../cyphers/movies';
-import { Movie } from '../types/movies';
+import { GetMoviesParams, Movie } from '../types/movies';
 
 export const moviesApi = (session: Session) => ({
   upsertMovie: async (params: Record<string, any>) => {
@@ -21,8 +21,10 @@ export const moviesApi = (session: Session) => ({
       reviewersResult,
     };
   },
-  getMovies: async (): Promise<Movie[]> => {
-    const result = await session.run(getMovies);
+  getMovies: async (
+    params: GetMoviesParams = { titles: [] }
+  ): Promise<Movie[]> => {
+    const result = await session.run(getMovies, params);
     const movies = result.records.map((record) => record.get('movie'));
     return movies;
   },
