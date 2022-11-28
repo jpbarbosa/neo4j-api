@@ -26,16 +26,38 @@ describe('moviesApi', () => {
   });
 
   it('should create 2 movies', async () => {
-    const result = await moviesApi(session).upsertMovie({
+    const { moviesResult, actorsResult, reviewersResult } = await moviesApi(
+      session
+    ).upsertMovie({
       movies: sampleMovies,
     });
 
-    const resultStats = result.summary.counters.updates();
+    const resultStats = moviesResult.summary.counters.updates();
     expect(resultStats.nodesCreated).toEqual(2);
+
+    const actorsResultStats = actorsResult.summary.counters.updates();
+    expect(actorsResultStats.nodesCreated).toBe(2 + 3);
+
+    const reviewersResultStats = reviewersResult.summary.counters.updates();
+    expect(reviewersResultStats.nodesCreated).toBe(2);
   });
 
   it('should get the 2 movies previously created', async () => {
-    const result = await moviesApi(session).getMovies();
-    expect(result).toIncludeSameMembers(sampleMovies);
+    const movies = await moviesApi(session).getMovies();
+
+    movies.forEach((movie) => {
+      const sampleMovie = sampleMovies.find(
+        (item) => item.title === movie.title
+      )!;
+      const { actors, reviewers, ...rootProps } = sampleMovie;
+      const {
+        actors: resultActors,
+        reviewers: resultReviewers,
+        ...resultRootProps
+      } = movie;
+      expect(resultRootProps).toEqual(rootProps);
+      expect(resultActors).toIncludeSameMembers(actors);
+      expect(resultReviewers).toIncludeSameMembers(reviewers);
+    });
   });
 });
