@@ -1,6 +1,6 @@
 # Neo4j API
 
-A sample API to show Neo4j usage with TypeScript, in a TDD fashion backed by Jest and Testcontainers, and with large transactions splitted into multiple Cypher queries.
+A sample API to show Neo4j usage with TypeScript, in a TDD fashion backed by Jest and Testcontainers, and with large transactions split into multiple Cypher queries.
 
 ### Step-by-Step Tutorial (build your own app)
 
