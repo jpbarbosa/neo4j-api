@@ -11,3 +11,7 @@ export type Movie = {
 export type GetMoviesParams = {
   titles: string[];
 };
+
+export type DeleteMoviesParams = {
+  titles: string[];
+};

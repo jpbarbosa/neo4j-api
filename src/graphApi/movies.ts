@@ -1,11 +1,12 @@
 import { Session } from 'neo4j-driver';
 import {
+  deleteMovies,
   getMovies,
   upsertMovies,
   upsertMoviesActors,
   upsertMoviesReviewers,
 } from '../cyphers/movies';
-import { GetMoviesParams, Movie } from '../types/movies';
+import { DeleteMoviesParams, GetMoviesParams, Movie } from '../types/movies';
 
 export const moviesApi = (session: Session) => ({
   upsertMovie: async (params: Record<string, any>) => {
@@ -27,5 +28,9 @@ export const moviesApi = (session: Session) => ({
     const result = await session.run(getMovies, params);
     const movies = result.records.map((record) => record.get('movie'));
     return movies;
+  },
+  deleteMovies: async (params: DeleteMoviesParams = { titles: [] }) => {
+    const result = await session.run(deleteMovies, params);
+    return result;
   },
 });

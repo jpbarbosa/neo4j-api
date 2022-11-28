@@ -160,4 +160,18 @@ describe('moviesApi', () => {
       theGodfather.reviewers
     );
   });
+
+  it('should delete The Godfather', async () => {
+    const result = await moviesApi(session).deleteMovies({
+      titles: ['The Godfather'],
+    });
+
+    const resultStats = result.summary.counters.updates();
+    expect(resultStats.nodesDeleted).toBe(1);
+
+    const movies = await moviesApi(session).getMovies({
+      titles: ['The Godfather'],
+    });
+    expect(movies).toHaveLength(0);
+  });
 });
