@@ -1,4 +1,5 @@
 import { Driver, Session } from 'neo4j-driver';
+import { sampleMovies } from '../sampleData/movies';
 import { moviesApi } from './movies';
 import { neo4jConfigFile } from './utils/neo4jConfigFile';
 
@@ -24,16 +25,17 @@ describe('moviesApi', () => {
     //await container.stop();
   });
 
-  it('should create a movie', async () => {
-    const result = await session.run(
-      'CREATE (m:Movie {title: "The Godfather"}) RETURN m'
-    );
+  it('should create 2 movies', async () => {
+    const result = await moviesApi(session).upsertMovie({
+      movies: sampleMovies,
+    });
+
     const resultStats = result.summary.counters.updates();
-    expect(resultStats.nodesCreated).toEqual(1);
+    expect(resultStats.nodesCreated).toEqual(2);
   });
 
-  it('should return upcoming movies data', async () => {
-    const result = await moviesApi().getMovies();
-    expect(result).toEqual('Upcoming movies data');
+  it('should get the 2 movies previously created', async () => {
+    const result = await moviesApi(session).getMovies();
+    expect(result).toIncludeSameMembers(sampleMovies);
   });
 });
