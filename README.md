@@ -33,7 +33,7 @@ Watch Usage: Press w to show more.
 ### Requirements
 
 - [Neo4j AuraDB](https://neo4j.com/cloud/platform/aura-graph-database/) free instance
-- [Docke Desktop](https://www.docker.com/) installed and running (Docker knowledge not required)
+- [Docker Desktop](https://www.docker.com/) installed and running (Docker knowledge not required)
 - [Node.js](https://nodejs.org/en/) installed (v16 or higher)
 
 ### References
