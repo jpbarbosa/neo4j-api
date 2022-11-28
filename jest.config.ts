@@ -6,6 +6,7 @@ const config: Config = {
   testEnvironment: 'node',
   setupFilesAfterEnv: ['jest-extended/all'],
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'cypher'],
+  globalSetup: './src/jestGlobalSetup.ts',
 };
 
 export default config;
