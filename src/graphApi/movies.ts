@@ -11,14 +11,14 @@ import {
   DeleteMoviesResult,
   GetMoviesParams,
   GetMoviesResult,
-  Movie,
+  UpsertMovieParams,
   UpsertMoviesActorsResult,
   UpsertMoviesResult,
   UpsertMoviesReviewersResult,
 } from '../types/movies';
 
 export const moviesApi = (session: Session) => ({
-  upsertMovie: async (params: Record<string, any>) => {
+  upsertMovie: async (params: UpsertMovieParams) => {
     const tx = await session.beginTransaction();
     const moviesResult = await tx.run<UpsertMoviesResult>(upsertMovies, params);
     const actorsResult = await tx.run<UpsertMoviesActorsResult>(

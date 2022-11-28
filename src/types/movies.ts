@@ -15,6 +15,10 @@ export type Movie = {
   reviewers: Reviewer[];
 };
 
+export type UpsertMovieParams = {
+  movies: Movie[];
+};
+
 export type GetMoviesParams = {
   titles: string[];
 };
