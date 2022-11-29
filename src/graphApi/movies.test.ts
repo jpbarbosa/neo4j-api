@@ -62,34 +62,35 @@ describe('moviesApi', () => {
   });
 
   it('should get only The Godfather', async () => {
+    const theGodfatherSample = sampleMovies.find(
+      (movie) => movie.title === 'The Godfather'
+    )!;
+
     const results = await moviesApi(session).getMovies({
       titles: ['The Godfather'],
     });
 
-    results.forEach((result) => {
-      const sampleMovie = sampleMovies.find(
-        (item) => item.title === result.title
-      )!;
-      const { actors, reviewers, ...rootProps } = sampleMovie;
-      const {
-        actors: resultActors,
-        reviewers: resultReviewers,
-        ...resultRootProps
-      } = result;
-      expect(resultRootProps).toEqual(rootProps);
-      expect(resultActors).toIncludeSameMembers(actors);
-      expect(resultReviewers).toIncludeSameMembers(reviewers);
-    });
+    const theGodfatherResult = results[0];
+
+    const { actors, reviewers, ...rootProps } = theGodfatherSample;
+    const {
+      actors: resultActors,
+      reviewers: resultReviewers,
+      ...resultRootProps
+    } = theGodfatherResult;
+    expect(resultRootProps).toEqual(rootProps);
+    expect(resultActors).toIncludeSameMembers(actors);
+    expect(resultReviewers).toIncludeSameMembers(reviewers);
   });
 
   it('should update The Godfather tagline', async () => {
-    const theGodfather = sampleMovies.find(
+    const theGodfatherSample = sampleMovies.find(
       (movie) => movie.title === 'The Godfather'
     )!;
-    theGodfather.tagline = "An offer you can't refuse. Updated.";
+    theGodfatherSample.tagline = "An offer you can't refuse. Updated.";
 
     await moviesApi(session).upsertMovie({
-      movies: [theGodfather],
+      movies: [theGodfatherSample],
     });
 
     const movies = await moviesApi(session).getMovies({
@@ -99,25 +100,25 @@ describe('moviesApi', () => {
       (movie) => movie.title === 'The Godfather'
     )!;
 
-    expect(theGodfatherUpdated.tagline).toEqual(theGodfather.tagline);
+    expect(theGodfatherUpdated.tagline).toEqual(theGodfatherSample.tagline);
   });
 
   it('should add one actor and one reviewer to The Godfather', async () => {
-    const theGodfather = sampleMovies.find(
+    const theGodfatherSample = sampleMovies.find(
       (movie) => movie.title === 'The Godfather'
     )!;
-    theGodfather.actors.push({
+    theGodfatherSample.actors.push({
       name: 'James Caan',
       born: 1940,
       roles: ['Sonny Corleone'],
     });
-    theGodfather.reviewers.push({
+    theGodfatherSample.reviewers.push({
       name: 'Vincent Canby',
       rating: 100,
     });
 
     await moviesApi(session).upsertMovie({
-      movies: [theGodfather],
+      movies: [theGodfatherSample],
     });
 
     const movies = await moviesApi(session).getMovies({
@@ -128,22 +129,22 @@ describe('moviesApi', () => {
     )!;
 
     expect(theGodfatherUpdated.actors).toIncludeSameMembers(
-      theGodfather.actors
+      theGodfatherSample.actors
     );
     expect(theGodfatherUpdated.reviewers).toIncludeSameMembers(
-      theGodfather.reviewers
+      theGodfatherSample.reviewers
     );
   });
 
   it('should remove one actor and one reviewer from The Godfather', async () => {
-    const theGodfather = sampleMovies.find(
+    const theGodfatherSample = sampleMovies.find(
       (movie) => movie.title === 'The Godfather'
     )!;
-    theGodfather.actors.pop();
-    theGodfather.reviewers.pop();
+    theGodfatherSample.actors.pop();
+    theGodfatherSample.reviewers.pop();
 
     await moviesApi(session).upsertMovie({
-      movies: [theGodfather],
+      movies: [theGodfatherSample],
     });
 
     const movies = await moviesApi(session).getMovies({
@@ -154,10 +155,10 @@ describe('moviesApi', () => {
     )!;
 
     expect(theGodfatherUpdated.actors).toIncludeSameMembers(
-      theGodfather.actors
+      theGodfatherSample.actors
     );
     expect(theGodfatherUpdated.reviewers).toIncludeSameMembers(
-      theGodfather.reviewers
+      theGodfatherSample.reviewers
     );
   });
 
