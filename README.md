@@ -30,6 +30,10 @@ Ran all test suites related to changed files.
 Watch Usage: Press w to show more.
 ```
 
+### Screenshot
+
+![TDD](https://user-images.githubusercontent.com/2099381/204643928-6e9af6d4-fcbb-4841-9dc7-e17872995e22.gif)
+
 ### Requirements
 
 - [Neo4j AuraDB](https://neo4j.com/cloud/platform/aura-graph-database/) free instance
