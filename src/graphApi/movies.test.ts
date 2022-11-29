@@ -78,6 +78,7 @@ describe('moviesApi', () => {
       reviewers: resultReviewers,
       ...resultRootProps
     } = theGodfatherResult;
+    expect(results).toHaveLength(1);
     expect(resultRootProps).toEqual(rootProps);
     expect(resultActors).toIncludeSameMembers(actors);
     expect(resultReviewers).toIncludeSameMembers(reviewers);
