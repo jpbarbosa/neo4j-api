@@ -21,14 +21,10 @@ export const moviesApi = (session: Session) => ({
   upsertMovie: async (params: UpsertMovieParams) => {
     const tx = await session.beginTransaction();
     const moviesResult = await tx.run<UpsertMoviesResult>(upsertMovies, params);
-    const actorsResult = await tx.run<UpsertMoviesActorsResult>(
-      upsertMoviesActors,
-      params
-    );
-    const reviewersResult = await tx.run<UpsertMoviesReviewersResult>(
-      upsertMoviesReviewers,
-      params
-    );
+    const [actorsResult, reviewersResult] = await Promise.all([
+      tx.run<UpsertMoviesActorsResult>(upsertMoviesActors, params),
+      tx.run<UpsertMoviesReviewersResult>(upsertMoviesReviewers, params),
+    ]);
     await tx.commit();
 
     return {
