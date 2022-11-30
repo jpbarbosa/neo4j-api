@@ -4,6 +4,8 @@ MATCH (movie:Movie {title: movieItem.title})
 WITH movieItem, movie
 UNWIND movieItem.reviewers AS reviewerItem
 
+CALL apoc.util.validate(reviewerItem.name = "", "reviewerItem.name cannot be a empty string", [reviewerItem.name])
+
 MERGE (reviewer:Person {name: reviewerItem.name})
 ON CREATE SET reviewer += {
   born: reviewerItem.born

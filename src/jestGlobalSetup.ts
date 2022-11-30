@@ -11,7 +11,7 @@ const setup = async (): Promise<void> => {
   } catch (e) {
     console.info(`\nNeo4j container is being created...`);
 
-    container = await new Neo4jContainer().withReuse().start();
+    container = await new Neo4jContainer().withReuse().withApoc().start();
 
     await neo4jConfigFile().write({
       boltUri: container.getBoltUri(),

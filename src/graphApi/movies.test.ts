@@ -1,5 +1,6 @@
 import { Driver, Session } from 'neo4j-driver';
 import { sampleMovies } from '../sampleData/movies';
+import { Movie } from '../types/movies';
 import { moviesApi } from './movies';
 import { neo4jConfigFile } from './utils/neo4jConfigFile';
 
@@ -161,6 +162,32 @@ describe('moviesApi', () => {
     expect(theGodfatherUpdated.reviewers).toIncludeSameMembers(
       theGodfatherSample.reviewers
     );
+  });
+
+  it('should not create any data when an error occurs in the transaction', async () => {
+    const movieWithInvalidActor: Movie = {
+      title: 'Any title',
+      tagline: 'Any tagline',
+      released: 2000,
+      actors: [
+        {
+          name: '', // Invalid actor name to force an error
+          born: 2000,
+          roles: ['Any role'],
+        },
+      ],
+      reviewers: [],
+    };
+
+    try {
+      await moviesApi(session).upsertMovie({
+        movies: [movieWithInvalidActor],
+      });
+    } catch (error) {}
+
+    const movies = await moviesApi(session).getMovies();
+
+    expect(movies).toHaveLength(2);
   });
 
   it('should delete The Godfather', async () => {
