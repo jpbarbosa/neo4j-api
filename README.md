@@ -1,6 +1,6 @@
 # Neo4j API
 
-A sample API to show Neo4j usage with TypeScript, in a TDD fashion backed by Jest and Testcontainers, and with large transactions split into multiple Cypher queries.
+A sample API to show Neo4j usage with TypeScript, in a TDD fashion backed by Jest and Testcontainers, and with large transactions split into multiple Cypher queries (with transaction consistency).
 
 ### Step-by-Step Tutorial (build your own app)
 
@@ -19,10 +19,11 @@ Neo4j container found at localhost:55001
     ✓ should update The Godfather tagline (27 ms)
     ✓ should add one actor and one reviewer to The Godfather (29 ms)
     ✓ should remove one actor and one reviewer from The Godfather (28 ms)
+    ✓ should not create any data when an error occurs in the transaction (13 ms)
     ✓ should delete The Godfather (14 ms)
 
 Test Suites: 1 passed, 1 total
-Tests:       7 passed, 7 total
+Tests:       8 passed, 8 total
 Snapshots:   0 total
 Time:        0.933 s, estimated 1 s
 Ran all test suites related to changed files.
